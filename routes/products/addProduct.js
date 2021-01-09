@@ -4,7 +4,7 @@ const router = express.Router()
 
 const product = require(`../../schemas/product/producSchema`)
 
-router.post(`/addproduct`, async (req, res) => {
+router.post(`/oishi/api/v1/addproduct`, async (req, res) => {
 
     const addProduct = new product(req.body)
 

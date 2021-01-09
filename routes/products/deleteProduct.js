@@ -5,7 +5,7 @@ const router = express.Router()
 
 const product = require(`../../schemas/product/producSchema`)
 
-router.delete(`/deleteproduct/:id`, async (req, res) => {
+router.delete(`/oishi/api/v1/deleteproduct/:id`, async (req, res) => {
 
     const deletus = product.findOneAndDelete({_id: req.params.id})
     

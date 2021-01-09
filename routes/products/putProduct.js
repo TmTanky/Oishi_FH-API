@@ -4,7 +4,7 @@ const router = express.Router()
 
 const product = require(`../../schemas/product/producSchema`)
 
-router.put(`/replaceitem/:id`, async (req, res) => {
+router.put(`/oishi/api/v1/replaceitem/:id`, async (req, res) => {
 
     const query = req.params.id
 

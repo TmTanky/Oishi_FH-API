@@ -4,7 +4,7 @@ const product = require(`../../schemas/product/producSchema`)
 
 const router = express.Router()
 
-router.get(`/getproductsall`, async (req, res) => {
+router.get(`/oishi/api/v1/getproductsall`, async (req, res) => {
 
     try {
         const items = await product.find()

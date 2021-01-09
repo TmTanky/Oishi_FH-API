@@ -4,7 +4,7 @@ const router = express.Router()
 
 const product = require(`../../schemas/product/producSchema`)
 
-router.patch(`/updateitem/:id`, async (req, res) => {
+router.patch(`/api/v1/updateitem/:id`, async (req, res) => {
 
     const query = req.params.id
 
