@@ -24,6 +24,6 @@ app.use(deleteProductsRouter)
 app.use(updateItemRouter)
 app.use(putItemRouter)
 
-app.listen(8000, () => {
+app.listen(process.env.PORT || 8000, () => {
     console.log(`Server is running`)
 })
