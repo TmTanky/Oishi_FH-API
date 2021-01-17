@@ -1,6 +1,7 @@
 const express = require(`express`)
 const mongoose = require(`mongoose`)
 const bcrypt = require(`bcrypt`)
+const jwt = require(`jsonwebtoken`)
 
 const router = express.Router()
 
@@ -28,8 +29,11 @@ router.post(`/oishi/api/v1/login`, async (req, res) => {
                     bcrypt.compare(password, foundUser.password, (err, result) => {
                         if (result) {
 
+                            const token = jwt.sign({id: foundUser._id}, process.env.JWT_SECRET_KEY,{ expiresIn: process.env.JWT_EXPIRES_IN})
+
                             res.status(200).send({
                                 message: `Successfully Logged In!`,
+                                token,
                                 data: foundUser
                             })
                         } else {
