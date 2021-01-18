@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require(`express`)
 const mongoose = require(`mongoose`)
 const bodyParser = require(`body-parser`)
+const createError = require(`http-errors`)
 
 const routeRouter = require(`./routes/main/rootRoute`)
 const addProductRouter = require(`./routes/products/addProduct`)
@@ -38,6 +39,22 @@ app.use(signUpRouter)
 app.use(logInRouter)
 
 // Admin routes
+
+// Error Handlers
+
+app.use((req, res, next) => {
+    next(createError(404, `Not found`))
+})
+
+app.use((err, req, res, next) => {
+    res.status(err.status || 500)
+    res.send({
+        error : {
+            status: err.status,
+            message: err.message
+        }
+    })
+})
 
 app.listen(process.env.PORT || 8000, () => {
     console.log(`Server is running`)

@@ -2,6 +2,7 @@ const express = require(`express`)
 const mongoose = require(`mongoose`)
 const bcrypt = require(`bcrypt`)
 const jwt = require(`jsonwebtoken`)
+const { body, validationResult } = require('express-validator')
 
 const router = express.Router()
 
@@ -16,8 +17,6 @@ router.post(`/oishi/api/v1/login`, async (req, res) => {
             message: `Please fill all the inputs`
         })
     }
-
-
 
     try {
 
