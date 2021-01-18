@@ -2,6 +2,7 @@ const express = require(`express`)
 const jwt = require("jsonwebtoken")
 const mongoose = require(`mongoose`)
 const createError = require(`http-errors`)
+const { body, validationResult } = require('express-validator')
 const router = express.Router()
 
 const product = require(`../../schemas/product/producSchema`)
