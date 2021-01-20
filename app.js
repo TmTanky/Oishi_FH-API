@@ -11,24 +11,26 @@ const getAllProductsRouter = require(`./routes/products/getProduct`)
 const deleteProductsRouter = require(`./routes/products/deleteProduct`)
 const updateItemRouter = require(`./routes/products/patchProduct`)
 const putItemRouter = require(`./routes/products/putProduct`)
+const getOneProductRouter = require(`./routes/products/getOneProduct`)
+const getProductByNameRouter = require(`./routes/products/getOneByName`)
 
 const signUpRouter = require(`./routes/users/visitor/signup`)
 const logInRouter = require(`./routes/users/visitor/login`)
+const deleteUserRouter = require(`./routes/users/deleteUsers/deleteUser`)
 
 const app = express()
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
-
 mongoose.connect(`${process.env.DB}`, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
-
-
 
 // Products routes
 
 app.use(routeRouter)
-app.use(addProductRouter)
+app.use(getOneProductRouter)
+app.use(getProductByNameRouter)
 app.use(getAllProductsRouter)
+app.use(addProductRouter)
 app.use(deleteProductsRouter)
 app.use(updateItemRouter)
 app.use(putItemRouter)
@@ -37,6 +39,7 @@ app.use(putItemRouter)
 
 app.use(signUpRouter)
 app.use(logInRouter)
+app.use(deleteUserRouter)
 
 // Admin routes
 

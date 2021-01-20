@@ -2,13 +2,14 @@ const express = require(`express`)
 const mongoose = require(`mongoose`)
 const bcrypt = require(`bcrypt`)
 const jwt = require(`jsonwebtoken`)
+const createError = require(`http-errors`)
 const { body, validationResult } = require('express-validator')
 
 const router = express.Router()
 
 const user = require(`../../../schemas/user/userSchema`)
 
-router.post(`/oishi/api/v1/login`, async (req, res) => {
+router.post(`/oishi/api/v1/login`, async (req, res, next) => {
 
     const {email, password} = req.body
 
@@ -36,19 +37,17 @@ router.post(`/oishi/api/v1/login`, async (req, res) => {
                                 data: foundUser
                             })
                         } else {
-                            res.status(400).send({
-                                message: `Invalid email or password`
-                            })
+                            next(createError(404, `Invalid email or password`))
                         }
                     })
+                } else {
+                    next(createError(404, `Invalid email or password`))
                 }
             }
         })
         
     } catch (err) {
-        res.status(400).send({
-            message: `Something went wrong`
-        })
+        next(createError(err.status, err))
     }
 
 })
