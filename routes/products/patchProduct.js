@@ -31,7 +31,7 @@ router.patch(`/oishi/api/v1/updateitem/:id`, async (req, res, next) => {
             next(createError(err.status, err))
         }
 
-        res.status(200).send({
+        res.status(200).json({
             messsage: `Success`,
             status: true,
             data: updatedItem
@@ -46,22 +46,3 @@ router.patch(`/oishi/api/v1/updateitem/:id`, async (req, res, next) => {
 
 module.exports = router
 
-// const {name, price, description} = req.body
-    // const newPrice = parseInt(price)
-
-    // const settingProduct =  product.findOneAndUpdate({_id: query}, { $set: {name: name, price: newPrice, description: description} }, () => {
-    // })
-
-    // try {
-    //     const newUpdatedProduct = settingProduct.save()
-
-    //     res.status(200).send({
-    //         message: `Succesfully Updated`,
-    //         data: newUpdatedProduct
-    //     })
-        
-    // } catch (err) {
-    //     res.status(400).send({
-    //         message: err
-    //     })
-    // }

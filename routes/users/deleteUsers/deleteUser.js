@@ -28,7 +28,7 @@ router.delete(`/oishi/api/v1/deleteuser/:id`, async (req, res, next) => {
 
         const deletingUser = await user.findOneAndDelete({_id: queryUser})
 
-        res.status(200).send({
+        res.status(200).json({
             message: `Successfully Deleted`,
             data: deletingUser
         })

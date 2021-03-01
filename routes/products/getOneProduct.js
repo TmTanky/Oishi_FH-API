@@ -27,7 +27,7 @@ router.get(`/oishi/api/v1/getoneproduct/:id`, async (req, res, next) => {
 
         const queryItem = await product.findOne({_id: onlyItem})
 
-        res.status(200).send({
+        res.status(200).json({
             message: `Success`,
             data: queryItem
         })

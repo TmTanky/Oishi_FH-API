@@ -20,7 +20,7 @@ router.post(`/oishi/api/v1/addproduct`, async (req, res, next) => {
         }
 
         if (!token) {
-            res.status(401).send({
+            res.status(401).json({
             message: `Unauthorized`
             })
         }
@@ -35,7 +35,7 @@ router.post(`/oishi/api/v1/addproduct`, async (req, res, next) => {
             next(createError(400,`Input product details`))
             return
         } else {
-            res.status(201).send({
+            res.status(201).json({
                 message: `Successfully Added`,
                 data: newProduct
             })

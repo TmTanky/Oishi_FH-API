@@ -2,6 +2,7 @@ const express = require(`express`)
 const mongoose = require(`mongoose`)
 const bcrypt = require(`bcrypt`)
 const jwt = require(`jsonwebtoken`)
+const createError = require(`http-errors`)
 const router = express.Router()
 const { body, validationResult } = require('express-validator')
 
@@ -9,46 +10,43 @@ const saltRounds = 10
 
 const user = require(`../../../schemas/user/userSchema`)
 
-router.post(`/oishi/api/v1/signup`, body(`email`).isEmail().withMessage(`Email must be valid.`), body(`password`).isLength({min:5}).withMessage(`Password must be 5 characters long.`), async (req, res) => {
+router.post(`/oishi/api/v1/signup`, async (req, res, next) => {
 
     const {email, password} = req.body
 
     try {
 
-        const errors = validationResult(req);
-             if (!errors.isEmpty()) {
-             return res.status(400).json({ errors: errors.array() });
-            }
+        if (!email || !password) {
+            return next(createError(400, `Please input all fields.`))
+        }
 
-        bcrypt.hash(password, saltRounds, async (err, hash) => {
+        if (password.length <= 4) {
+            return next(createError(400, `Password must be 5 or more characters.`))
+        }
 
-            const newAccount = await new user({
-                email,
-                password: hash
-            })
+        const hash = await bcrypt.hash(password, saltRounds)
 
-            if (!newAccount.email || !newAccount.password) {
-                res.status(400).send({
-                    message: "Invalid input"
-                }) 
-            } else {
-                newAccount.save()
+        const newAccount = await new user({
+            email,
+            password: hash
+        })
 
-                const token = jwt.sign({id: newAccount._id}, process.env.JWT_SECRET_KEY,{ expiresIn: process.env.JWT_EXPIRES_IN})
+        const savingAccount = await newAccount.save()     
+        const token = jwt.sign({id: newAccount._id}, process.env.JWT_SECRET_KEY)
 
-                res.status(200).send({
-                    message: `Successfully registered`,
-                    token,
-                    data: newAccount
-                })
-            }
-
+        res.status(200).json({
+            msg: `Successfully registered`,
+            token,
+            user: newAccount
         })
 
     } catch (err) {
-        res.status(400).send({
-            message: err
-        })
+
+        if (err.code === 11000 || err.keyPattern.email === 1) {
+            return next(createError(400, `Email already exist.`))
+        }
+
+        next(createError(404, err))
     }
 
 
@@ -57,45 +55,3 @@ router.post(`/oishi/api/v1/signup`, body(`email`).isEmail().withMessage(`Email m
 module.exports = router
 
 
-
-// router.post('/oishi/api/v1/signup',body('username').isEmail(),body('password').isLength({ min: 5 }), (req, res) => {
-    
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(400).json({ errors: errors.array() });
-//     }
-
-//     bcrypt.hash(password, saltRounds, async (err, hash) => {
-
-//         const newAccount = await new user({
-//             email,
-//             password: hash
-//         })
-
-
-        
-
-//         if (!newAccount.email || !newAccount.password) {
-//             res.status(400).send({
-//                 message: "Invalid input"
-//             }) 
-//         } else {
-//             newAccount.save()
-
-//             const token = jwt.sign({id: newAccount._id}, process.env.JWT_SECRET_KEY,{ expiresIn: process.env.JWT_EXPIRES_IN})
-
-//             res.status(200).send({
-//                 message: `Successfully registered`,
-//                 token,
-//                 data: newAccount
-//             })
-//         }
-
-//         const errors = validationResult(req);
-//          if (!errors.isEmpty()) {
-//          return res.status(400).json({ errors: errors.array() });
-//         }
-
-//     })
-//   },
-// );

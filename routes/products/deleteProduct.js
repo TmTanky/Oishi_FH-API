@@ -30,7 +30,7 @@ router.delete(`/oishi/api/v1/deleteproduct/:id`, async (req, res, next) => {
         if (!deletedItem) {
             next(createError(err.status, `Not found`))
         } else {
-            res.status(200).send({
+            res.status(200).json({
                 message: `Successfully Deleted`,
                 data: deletedItem
             })

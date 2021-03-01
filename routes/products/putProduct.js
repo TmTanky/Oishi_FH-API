@@ -28,7 +28,7 @@ router.put(`/oishi/api/v1/replaceitem/:id`, async (req, res, next) => {
         const putProduct = await product.findOneAndReplace({_id: query}, req.body) 
         // Still not fix i want not to validate the data before saving
 
-        res.status(200).send({
+        res.status(200).json({
             messsage: `Successfully overwrite product`,
             data: putProduct
         })

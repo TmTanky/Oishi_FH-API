@@ -4,6 +4,7 @@ const express = require(`express`)
 const mongoose = require(`mongoose`)
 const bodyParser = require(`body-parser`)
 const createError = require(`http-errors`)
+const cors = require(`cors`)
 
 const routeRouter = require(`./routes/main/rootRoute`)
 const addProductRouter = require(`./routes/products/addProduct`)
@@ -19,10 +20,12 @@ const logInRouter = require(`./routes/users/visitor/login`)
 const deleteUserRouter = require(`./routes/users/deleteUsers/deleteUser`)
 
 const app = express()
+
+app.use(cors())
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
-mongoose.connect(`${process.env.DB}`, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
+mongoose.connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
 
 // Products routes
 
@@ -51,10 +54,10 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500)
-    res.send({
+    return res.json({
         error : {
             status: err.status,
-            message: err.message
+            msg: err.message
         }
     })
 })
