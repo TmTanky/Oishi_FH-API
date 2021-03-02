@@ -12,11 +12,11 @@ const user = require(`../../../schemas/user/userSchema`)
 
 router.post(`/oishi/api/v1/signup`, async (req, res, next) => {
 
-    const {email, password} = req.body
+    const {email, password, name} = req.body
 
     try {
 
-        if (!email || !password) {
+        if (!email || !password || !name) {
             return next(createError(400, `Please input all fields.`))
         }
 
@@ -27,6 +27,7 @@ router.post(`/oishi/api/v1/signup`, async (req, res, next) => {
         const hash = await bcrypt.hash(password, saltRounds)
 
         const newAccount = await new user({
+            name,
             email,
             password: hash
         })

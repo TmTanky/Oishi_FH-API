@@ -4,6 +4,7 @@ const express = require(`express`)
 const mongoose = require(`mongoose`)
 const bodyParser = require(`body-parser`)
 const createError = require(`http-errors`)
+const cookieSession = require('cookie-session')
 const cors = require(`cors`)
 
 const routeRouter = require(`./routes/main/rootRoute`)
@@ -24,6 +25,11 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
+app.set('trust proxy', 1)
+app.use(cookieSession({
+  name: 'tangina',
+  keys: [process.env.KEY_1, process.env.KEY_2]
+}))
 
 mongoose.connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
 

@@ -9,6 +9,14 @@ const router = express.Router()
 
 router.get(`/oishi/api/v1/getproductsall`, async (req, res, next) => {
 
+    // const token = req.session.ID
+
+    // if (!token) {
+    //     return next(createError(400, `No token`))
+    // } else {
+    //     console.log(token)
+    // }
+
     let token
 
     if (req.headers.auth && req.headers.auth.startsWith(`Bearer`)) {

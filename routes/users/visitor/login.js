@@ -29,6 +29,7 @@ router.post(`/oishi/api/v1/login`, async (req, res, next) => {
 
                             const token = jwt.sign({id: foundUser._id}, process.env.JWT_SECRET_KEY)
 
+                            req.session.ID = token
                             res.status(200).json({
                                 msg: `Successfully Logged In!`,
                                 token,
