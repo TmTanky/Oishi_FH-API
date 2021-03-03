@@ -11,8 +11,7 @@ router.post(`/oishi/api/v1/addproduct`, async (req, res, next) => {
     const {name, price, description} = req.body
 
     if (!name, !price, !description) {
-        next(createError(400, `Please fill all inputs`))
-        // return console.log(`Hello`)
+        return next(createError(400, `Please fill all inputs`))
     }
 
     try {
